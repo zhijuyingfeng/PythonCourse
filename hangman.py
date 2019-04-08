@@ -229,6 +229,7 @@ def show_possible_matches(my_word):
     '''
     if not '_ ' in my_word:
       print(my_word)
+	  return
     
     cnt=0
     # for i in range(len(my_word)):
