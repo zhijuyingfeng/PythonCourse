@@ -138,7 +138,7 @@ def hangman(secret_word):
       print('Available letters:',get_available_letters(letters_guessed))
 
       letter=input('Please guess a letter:')
-      if len(letter)==1 and letter.isalpha() and not letter in letters_guessed:
+      if len(letter)==1 and letter.isalpha() and not letter.lower() in letters_guessed:
         letter=letter.lower()
         letters_guessed.append(letter)
         if letter in secret_word:
