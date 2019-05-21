@@ -8,7 +8,7 @@ import string
 import time
 import threading
 from project_util import translate_html
-# from mtTkinter import *
+from mtTkinter import *
 from datetime import datetime
 import pytz
 import re
@@ -175,12 +175,35 @@ class AfterTrigger(TimeTrigger):
 
 # Problem 7
 # TODO: NotTrigger
+class NotTrigger(Trigger):
+    def __init__(self,trigger):
+        Trigger.__init__(self)
+        self.trigger=trigger
+    
+    def evaluate(self, story):
+        return not self.trigger.evaluate(story)
 
 # Problem 8
 # TODO: AndTrigger
+class AndTrigger(Trigger):
+    def __init__(self,trigger1,trigger2):
+        Trigger.__init__(self)
+        self.trigger1=trigger1
+        self.trigger2=trigger2
+    
+    def evaluate(self, story):
+        return self.trigger1.evaluate(story) and self.trigger2.evaluate(story)
 
 # Problem 9
 # TODO: OrTrigger
+class OrTrigger(Trigger):
+    def __init__(self,trigger1,trigger2):
+        Trigger.__init__(self)
+        self.trigger1=trigger1
+        self.trigger2=trigger2
+    
+    def evaluate(self, story):
+        return self.trigger1.evaluate(story) or self.trigger2.evaluate(story)   
 
 
 #======================
@@ -197,7 +220,13 @@ def filter_stories(stories, triggerlist):
     # TODO: Problem 10
     # This is a placeholder
     # (we're just returning all the stories, with no filtering)
-    return stories
+    fired=[]
+    for story in stories:
+        for trigger in triggerlist:
+            if trigger.evaluate(story):
+                fired.append(story)
+                break
+    return fired
 
 
 
@@ -225,6 +254,41 @@ def read_trigger_config(filename):
     # line is the list of lines that you need to parse and for which you need
     # to build triggers
 
+    ans=[]
+    triggers={}
+    for line in lines:
+        words=line.split(',')
+        word_num=len(words)
+        if words[0]=='ADD':
+            for i in range(1,word_num):
+                trigger=triggers.get(words[i],None)
+                if trigger:
+                    ans.append(trigger)
+        else:
+            trigger_name=words[0]
+            if words[1]=="TITLE":
+                triggers[trigger_name]=TitleTrigger(words[2])
+            elif words[1]=="DESCRIPTION":
+                triggers[trigger_name]=DescriptionTrigger(words[2])
+            elif words[1]=="AFTER":
+                triggers[trigger_name]=AfterTrigger(words[2])
+            elif words[1]=="BEFORE":
+                triggers[trigger_name]=BeforeTrigger(words[2])
+            elif words[1]=="NOT":
+                trigger=triggers.get(words[2],None)
+                if trigger:
+                    triggers[trigger_name]=NotTrigger(trigger)
+            elif words[1]=="AND":
+                trigger1=triggers.get(words[2],None)
+                trigger2=triggers.get(words[3],None)
+                if trigger1 and trigger2:
+                    triggers[trigger_name]=AndTrigger(trigger1,trigger2)
+            elif words[1]=="OR":
+                trigger1=triggers.get(words[2],None)
+                trigger2=triggers.get(words[3],None)
+                if trigger1 and trigger2:
+                    triggers[trigger_name]=OrTrigger(trigger1,trigger2)
+    return ans
     print(lines) # for now, print it so you see what it contains!
 
 
@@ -243,7 +307,7 @@ def main_thread(master):
 
         # Problem 11
         # TODO: After implementing read_trigger_config, uncomment this line 
-        # triggerlist = read_trigger_config('triggers.txt')
+        triggerlist = read_trigger_config('triggers.txt')
         
         # HELPER CODE - you don't need to understand this!
         # Draws the popup window that displays the filtered stories
@@ -300,9 +364,3 @@ if __name__ == '__main__':
     t = threading.Thread(target=main_thread, args=(root,))
     t.start()
     root.mainloop()
-
-    # ancient_time = datetime(1987, 10, 15)
-    # ancient_time = ancient_time.replace(tzinfo=pytz.timezone("EST"))
-    # ancient = NewsStory('', '', '', '', ancient_time)
-    # tt=BeforeTrigger("15 Oct 2016 17:00:10")
-    # tt.evaluate(ancient)
