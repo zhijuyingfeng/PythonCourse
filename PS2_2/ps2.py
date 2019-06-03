@@ -20,6 +20,9 @@ from graph import Digraph, Node, WeightedEdge
 # represented?
 #
 # Answer:
+# 顶点表示校园内的建筑物
+# 边表示两个顶点之间的路径
+# 边的权重表示两个建筑物之间的距离
 #
 #TODO
 
@@ -66,6 +69,8 @@ def load_map(map_filename):
 # Problem 2c: Testing load_map
 # Include the lines used to test load_map below, but comment them out
 
+#G=load_map("mit_map.txt")
+#print(str(G))
 
 #
 # Problem 3: Finding the Shorest Path using Optimized Search Method
@@ -75,11 +80,11 @@ def load_map(map_filename):
 # What is the objective function for this problem? What are the constraints?
 #
 # Answer:
-#
+# 目标函数为：在不超过户外距离限制以及总距离限制下，在两个建筑物之间找到一条总距离最小的路径
+# 限制为：不能超过允许的最大户外距离以及最大总距离
 
 # Problem 3b: Implement get_best_path
 Best_dist=99999
-Best_path=[]
 def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
                   best_path):
     """
@@ -115,7 +120,6 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         max_dist_outdoors constraints, then return None.
     """
     global Best_dist
-    global Best_path
     if not digraph.has_node(start):
         raise ValueError("Bad test case!")
     elif start==end:
@@ -123,10 +127,9 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
             # print(path[0])
             Best_dist=path[1]
             best_path.clear()
-            length=len(path[0])
-            for i in list(range(length)):
-                best_path.append("")
-                best_path[i]=path[0][i]
+            #length=len(path[0])
+            for i in path[0]:
+                best_path.append(i)
             return tuple(best_path)
     elif path[1]>Best_dist or path[2]>max_dist_outdoors:
         return None
