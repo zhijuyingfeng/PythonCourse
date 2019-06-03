@@ -12,7 +12,7 @@
 ```python
 def get_word_score(word, n):
 ```
-2. 返回一轮游戏的字母集合
+2. 返回一轮游戏的字母集合Part B: Cipher Like Caesar
 ```python
 def deal_hand(n):
 ```
