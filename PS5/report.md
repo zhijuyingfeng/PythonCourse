@@ -4,7 +4,7 @@
 ## 二、程序
 <i>注：为适应排版，此处代码与源代码有所出入</i>
 ![avatar](pics/1.png)
-1.  NewStory类，由于存储一条新闻的信息
+1.  NewStory类，用于存储一条新闻的信息
     ```python
     class NewsStory:
         def __init__(self, guid, title, description, link, pubdate):
@@ -232,4 +232,9 @@ def read_trigger_config(filename):
     ```
 最后再将这两个触发器求交即可。
 ## 四、 运行结果
+* 运行ps5_test.py的结果
+![avatar](pics/3.png)
+* 运行ps5.py的结果
+![avatar](pics/2.png)
+猜测页面空白是由于无法连接到境外的服务器。
 ## 五、 实验心得
