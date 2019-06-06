@@ -220,19 +220,22 @@ class Robot(object):
         self.room=room
         self.speed=speed
         self.capacity=capacity
+        self.position=room.get_random_position()
+        self.direction=random.random()*360
+
 
     def get_robot_position(self):
         """
         Returns: a Position object giving the robot's position in the room.
         """
-        raise NotImplementedError
+        return self.position
 
     def get_robot_direction(self):
         """
         Returns: a float d giving the direction of the robot as an angle in
         degrees, 0.0 <= d < 360.0.
         """
-        raise NotImplementedError
+        return self.direction
 
     def set_robot_position(self, position):
         """
@@ -240,7 +243,7 @@ class Robot(object):
 
         position: a Position object.
         """
-        raise NotImplementedError
+        self.position=position
 
     def set_robot_direction(self, direction):
         """
@@ -248,7 +251,7 @@ class Robot(object):
 
         direction: float representing an angle in degrees
         """
-        raise NotImplementedError
+        self.direction=direction
 
     def update_position_and_clean(self):
         """
@@ -270,7 +273,7 @@ class EmptyRoom(RectangularRoom):
         """
         Returns: an integer; the total number of tiles in the room
         """
-        raise NotImplementedError
+        return self.width*self.height
         
     def is_position_valid(self, pos):
         """
@@ -278,13 +281,15 @@ class EmptyRoom(RectangularRoom):
         
         Returns: True if pos is in the room, False otherwise.
         """
-        raise NotImplementedError
+        return RectangularRoom.is_position_in_room(self,pos)
         
     def get_random_position(self):
         """
         Returns: a Position object; a valid random position (inside the room).
         """
-        raise NotImplementedError
+        x=random.random()*self.width
+        y=random.random()*self.height
+        return Position(x,y)
 
 class FurnishedRoom(RectangularRoom):
     """
@@ -331,7 +336,7 @@ class FurnishedRoom(RectangularRoom):
         """
         Return True if tile (m, n) is furnished.
         """
-        raise NotImplementedError
+        return (m,n) in self.furniture_tiles
         
     def is_position_furnished(self, pos):
         """
@@ -339,7 +344,9 @@ class FurnishedRoom(RectangularRoom):
 
         Returns True if pos is furnished and False otherwise
         """
-        raise NotImplementedError
+        m=math.floor(pos.get_x())
+        n=math.floor(pos.get_y())
+        return self.is_tile_furnished(m,n)
         
     def is_position_valid(self, pos):
         """
@@ -347,19 +354,31 @@ class FurnishedRoom(RectangularRoom):
         
         returns: True if pos is in the room and is unfurnished, False otherwise.
         """
-        raise NotImplementedError
+        return RectangularRoom.is_position_in_room(self,pos) and not self.is_position_furnished(pos)
         
     def get_num_tiles(self):
         """
         Returns: an integer; the total number of tiles in the room that can be accessed.
         """
-        raise NotImplementedError
+        return self.width*self.height-len(self.furniture_tiles)
         
     def get_random_position(self):
         """
         Returns: a Position object; a valid random position (inside the room and not in a furnished area).
         """
-        raise NotImplementedError
+        temp=[[True]*self.width]*self.height
+        for t in self.furniture_tiles:
+            temp[t[0]][t[1]]=False
+        no_furniture_tile=[]
+        for i in self.width:
+            for j in self.height:
+                if temp[i][j]:
+                    no_furniture_tile.append((i,j))
+        delta_x=random.random()
+        delta_y=random.random()
+        (m,n)=random.choice(no_furniture_tile)
+        return Position(m+delta_x,n+delta_y)
+
 
 # === Problem 3
 class StandardRobot(Robot):
