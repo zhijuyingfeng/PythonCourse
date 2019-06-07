@@ -494,6 +494,7 @@ def run_simulation(num_robots, speed, capacity, width, height, dirt_amount, min_
     tile_num=width*height
     time_step=[]
     for i in range(num_trials):
+        # anim=ps3_visualize.RobotVisualization(num_robots, width, height,False)
         robots=[]
         room=EmptyRoom(width,height,dirt_amount)
 
@@ -505,7 +506,9 @@ def run_simulation(num_robots, speed, capacity, width, height, dirt_amount, min_
             for robot in robots:
                 robot.update_position_and_clean()
             count+=1
+            # anim.update(room,robots)
         time_step.append(count)
+        # anim.done()
     sum=0
     for time in time_step:
         sum+=time
@@ -575,4 +578,4 @@ def show_plot_room_shape(title, x_label, y_label):
 
 
 # show_plot_compare_strategies('Time to clean 80% of a 20x20 room, for various numbers of robots','Number of robots','Time / steps')
-show_plot_room_shape('Time to clean 80% of a 300-tile room for various room shapes','Aspect Ratio', 'Time / steps')
+# show_plot_room_shape('Time to clean 80% of a 300-tile room for various room shapes','Aspect Ratio', 'Time / steps')
