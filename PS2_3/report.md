@@ -107,7 +107,7 @@
     ```python
     class FurnishedRoom(RectangularRoom):
         def __init__(self, width, height, dirt_amount):
-            初始化父类
+            #初始化父类
             RectangularRoom.__init__(self, width, height, dirt_amount)
             self.furniture_tiles = []#家具所在的区块
             
@@ -157,7 +157,7 @@
             (m,n)=random.choice(no_furniture_tile)
             return Position(m+delta_x,n+delta_y)#返回一个有效的随机位置
     ```
-4. Robot的派生类StandardRobot
+5. Robot的派生类StandardRobot
     ```python
     class StandardRobot(Robot):
 
@@ -173,7 +173,7 @@
                 #否则随机选择一个方向
                 self.direction=random.random()*360
     ```
-5. Robot的派生类FaultyRobot
+6. Robot的派生类FaultyRobot
     ```python
     class FaultyRobot(Robot):
         p = 0.15#出错的概率
@@ -190,14 +190,16 @@
             if faulty:#如果出错
                 self.direction=random.random()*360#随机选择一个新方向
             else:#否则行为与StandardRobot一致
-                next_pos=self.position.get_new_position(self.direction,self.speed)
+                next_pos=self.position.get_new_position
+                    (self.direction,self.speed)
                 if self.room.is_position_valid(next_pos):
                     self.position=next_pos
-                    self.room.clean_tile_at_position(self.position,self.capacity)
+                    self.room.clean_tile_at_position
+                        (self.position,self.capacity)
                 else:
                     self.direction=random.random()*360
     ```
-6. 模拟机器人的运行情况
+7. 模拟机器人的运行情况
     ```python
     def run_simulation(num_robots, speed, capacity, width, height, dirt_amount, 
             min_coverage, num_trials, robot_type):
@@ -215,7 +217,8 @@
         tile_num=width*height#房间的区块数
         time_step=[]#每次测试所需的时间
         for i in range(num_trials):#测试num_trials次
-            # anim=ps3_visualize.RobotVisualization(num_robots, width, height,False)
+            # anim=ps3_visualize.RobotVisualization
+            #    (num_robots, width, height,False)
             robots=[]#机器人
             #房间
             room=EmptyRoom(width,height,dirt_amount)
@@ -395,8 +398,7 @@
     ```python
     show_plot_compare_strategies('Time to clean 80% of a 20x20 room, 
         for various numbers of robots','Number of robots','Time / steps')
-    show_plot_room_shape('Time to clean 80% of a 300-tile room for various room shapes',
-        'Aspect Ratio', 'Time / steps')
+    show_plot_room_shape('Time to clean 80% of a 300-tile room for various room shapes','Aspect Ratio', 'Time / steps')
     ```
     结果：
 
