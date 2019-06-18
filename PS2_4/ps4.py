@@ -332,6 +332,8 @@ def calc_95_ci(populations, t):
     SEM=std/math.sqrt(num_trivals)
     return (avg,1.96*SEM)
 
+# avg,delta=calc_95_ci(populations,299)
+# print(avg-delta,avg+delta)
 
 ##########################
 # PROBLEM 4
@@ -573,7 +575,7 @@ def simulation_with_antibiotic(num_bacteria,
     for i in range(401):
         total_avg.append(calc_pop_avg(total,i))
         resistant_avg.append(calc_pop_avg(resistants,i))
-    make_two_curve_plot(x_coords,total_avg,resistant_avg,"Total","Resistant","Timestep","Average Population","With ab Antibiotic")
+    make_two_curve_plot(x_coords,total_avg,resistant_avg,"Total","Resistant","Timestep","Average Population","With an Antibiotic")
     return (total,resistants)
 
 # When you are ready to run the simulations, uncomment the next lines one
@@ -586,10 +588,23 @@ total_pop, resistant_pop = simulation_with_antibiotic(num_bacteria=100,
                                                       mut_prob=0.8,
                                                       num_trials=50)
 
-# total_pop, resistant_pop = simulation_with_antibiotic(num_bacteria=100,
-#                                                       max_pop=1000,
-#                                                       birth_prob=0.17,
-#                                                       death_prob=0.2,
-#                                                       resistant=False,
-#                                                       mut_prob=0.8,
-#                                                       num_trials=50)
+# avg,delta=calc_95_ci(total_pop,299)
+# print("%-12s:"%("total"),avg-delta,avg+delta)
+
+# avg,delta=calc_95_ci(resistant_pop,299)
+# print("%-12s:"%("resistant"),avg-delta,avg+delta)
+
+total_pop, resistant_pop = simulation_with_antibiotic(num_bacteria=100,
+                                                      max_pop=1000,
+                                                      birth_prob=0.17,
+                                                      death_prob=0.2,
+                                                      resistant=False,
+                                                      mut_prob=0.8,
+                                                      num_trials=50)
+
+# print()
+# avg,delta=calc_95_ci(total_pop,299)
+# print("%-12s:"%("total"),avg-delta,avg+delta)
+
+# avg,delta=calc_95_ci(resistant_pop,299)
+# print("%-12s:"%("resistant"),avg-delta,avg+delta)
