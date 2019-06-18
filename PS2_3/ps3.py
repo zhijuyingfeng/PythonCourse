@@ -528,12 +528,15 @@ def run_simulation(num_robots, speed, capacity, width, height, dirt_amount, min_
 # 1)How does the performance of the two robot types compare when cleaning 80%
 #       of a 20x20 room?
 #
-#   
+#   在清除干净房间至少80%的区块时，随着机器人数目的增加，所需的时间大致成反比例减少。
+#   StandardRobot所需的时间更少，大致比FaultyRobot所需时间少15%，即FaultyRobot出错的概率。
 # 2) How does the performance of the two robot types compare when two of each
 #       robot cleans 80% of rooms with dimensions 
 #       10x30, 20x15, 25x12, and 50x6?
 #
-#
+#	当房间规模为20x15（长宽比为1.333）时，两种机器人的效率达到最高。
+#   长宽比大于1.333后，随着房间长宽比的增加，两种机器人所需的时间大致成正比例增加。
+#   StandardRobot所需的时间更少，大致比FaultyRobot所需时间少15%，即FaultyRobot出错的概率。
 
 def show_plot_compare_strategies(title, x_label, y_label):
     """
